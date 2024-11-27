@@ -13,6 +13,8 @@
     plantbreedgame.url = "github:timflutre/PlantBreedGame/v1.1.1";
 
     flake-utils.url = "github:numtide/flake-utils";
+    nix2container.url = "github:nlewo/nix2container";
+    nix2container.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -22,6 +24,7 @@
       rpkgs,
       plantbreedgame,
       flake-utils,
+      nix2container,
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
@@ -29,12 +32,16 @@
         pkgs = import nixpkgs { inherit system; };
         Rpkgs = import rpkgs { inherit system; };
         plantbreedgamePkgs = plantbreedgame.packages.${system};
+        nix2containerPkgs = nix2container.packages.${system};
+        imageBuilder = (import ./dockerfile.nix { inherit nix2containerPkgs pkgs; }).builder;
 
         R-packages = with Rpkgs.rPackages; [
           # list necessary R packages here
           rmarkdown
           shiny
 
+          # not in CRAN or Bioconductor:
+          # https://github.com/r-for-educators/flair
           (pkgs.rPackages.buildRPackage {
             name = "flair";
             src = pkgs.fetchFromGitHub {
@@ -94,7 +101,12 @@
             r-with-packages
             pkgs.pandoc
             pkgs.coreutils
+            pkgs.xdg-utils
+            pkgs.which
           ];
+
+          # To skip the Makefile
+          dontBuild = true;
 
           installPhase = ''
             runHook preInstall
@@ -117,6 +129,39 @@
             export IBC_PRESENTATION_FILE="$out/src/IBC_2024.Rmd"
             export IBC_PRESENTATION_DIR="$out/src"
 
+            help() {
+                echo "Usage: presentation [options]"
+                echo ""
+                echo "Options:"
+                echo "  --host <hostname>   The IPv4 address that the application should listen on."
+            }
+
+            HOST="127.0.0.1"
+            while [ "\$1" != "" ]; do
+              case "\$1" in
+                --host)
+                    shift
+                    HOST="\$1"
+                    ;;
+                --help)
+                    help
+                    exit 0
+                    ;;
+                --)
+                    shift
+                    break
+                    ;;
+                *)
+                    echo "Error: Unkown argument \"\$1\""
+                    help
+                    exit 1
+                    ;;
+              esac
+              shift
+            done
+            export HOST
+
+
             Rscript --vanilla $out/src/start_presentation.R
 
             EOF
@@ -130,12 +175,27 @@
         });
         packages.default = packages.presentation;
 
-        apps = {
+        apps = rec {
           presentation = {
             type = "app";
             program = "${packages.presentation}/bin/IBC_2024_presentation";
           };
+          default = presentation;
         };
+
+        images = {
+          latest =
+            let
+            in
+            (imageBuilder {
+              # imageName = "IBC2024presentation";
+              imageName = "ghcr.io/juliendiot42/IBC_2024_presentation/IBC2024presentation";
+
+              presentation = packages.presentation;
+              tag = "latest";
+            });
+        };
+
       }
     );
 }
