@@ -40,7 +40,7 @@ can find the list of the R-packages required to run the presentation in the file
 R-packages = with Rpkgs.rPackages; [
 ```
 
-(approximatly [here](https://github.com/juliendiot42/IBC_2024_presentation/blob/master/flake.nix#L33))
+(approximatly [here](https://github.com/juliendiot42/IBC_2024_presentation/blob/master/flake.nix#L38))
 
 > Notes:  
 > The R vesion used in this repo is `4.3.3 (2024-02-29) -- "Angel Food Cake"`  
