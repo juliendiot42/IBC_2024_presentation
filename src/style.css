@@ -1,0 +1,74 @@
+h1 {
+  font-size: 50px !important;
+  line-height: 1.4;
+  letter-spacing: -3px;
+  color: #515151;
+}
+
+h2 {
+  color: #1c3f94;
+
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-color: #7fb8ff;
+}
+
+/* ------------- LOGO -------------*/
+/*
+slides > slide.backdrop {
+  background-image: url(img/texturebg.png);
+  background-position: 0 100%;
+  background-repeat: repeat-x;
+}
+
+slides > slide:not(.nobackground):after {
+  color: #ffffff;
+}
+*/
+
+.gdbar img {
+  width: 206px !important; /* 550px */
+  height: 75px !important; /* 200px */
+  margin: 8px 8px;
+}
+
+.gdbar {
+  width: 220px !important;
+  height: 100px !important;
+}
+
+slides > slide:not(.nobackground):before {
+  width: 151px;
+  height: 55px;
+  background-size: 151px 55px;
+}
+
+/* ------------- images -------------*/
+slide img {
+  max-width: 768px;
+  max-height: 350px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+slides > slide.dark {
+  background-image: url(imgs/title-slide_bg.jpg) !important;
+  height: 700px !important; /* You must set a specified height */
+  background-position: center !important; /* Center the image */
+  background-repeat: no-repeat !important; /* Do not repeat the image */
+  background-size: cover !important; /* Resize the background image to cover the entire container */
+}
+
+.segue h2 {
+  color: #1c3f94 !important;
+  font-size: 60px !important;
+}
+
+.title-slide hgroup h1 {
+  color: #1c3f94 !important;
+}
+
+.title-slide hgroup p {
+  color: #7fb8ff !important;
+}

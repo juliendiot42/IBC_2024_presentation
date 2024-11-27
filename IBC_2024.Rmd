@@ -1,0 +1,86 @@
+---
+title: "Untitled"
+author: "Julien Diot"
+date: "2024-11-25"
+output:
+  ioslides_presentation:
+    # css: src/style.css # not working within the nix package
+    logo: src/imgs/IBS_IBC-Logo_2023.png
+    widescreen: yes
+    incremental: false
+    smaller: false
+    transition: faster
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  results = "hold" # display chunk output in one block
+)
+
+library(flair)
+library(dplyr)
+```
+```{r css, results='asis'}
+htmltools::includeCSS("src/style.css")
+```
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with R Output
+
+```{r echo=TRUE, eval=FALSE}
+print("toto")
+print("toto")
+print("toto")
+print("toto")
+```
+
+## Slide with R Output
+
+<pre><code>
+print("toto")
+<strong>print("toto")</strong>
+print("toto")
+print("toto")
+</code></pre>
+
+## how_to_pipe
+
+```{r how_to_pipe, include = FALSE}
+print("toto")
+print("tata")
+print("titi")
+print("tutu")
+```
+
+
+```{r, echo = FALSE}
+decorate("how_to_pipe") %>%
+  flair_lines(c(2, 4))
+```
+
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
