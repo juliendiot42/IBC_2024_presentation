@@ -21,7 +21,10 @@ knitr::opts_chunk$set(
 
 library(flair)
 library(dplyr)
+library(plotly)
+library(shiny)
 ```
+
 ```{r css, results='asis'}
 htmltools::includeCSS("src/style.css")
 ```
@@ -44,23 +47,107 @@ When you click the **Knit** button a document will be generated that includes bo
 summary(cars)
 ```
 
-## Slide with R Output
 
-```{r echo=TRUE, eval=FALSE}
-print("toto")
-print("toto")
-print("toto")
-print("toto")
+
+
+## Interactive Plot
+
+```{r eruptions, results='markup'}
+inputPanel(
+  selectInput("n_breaks", label = "Number of bins:",
+              choices = c(10, 20, 35, 50), selected = 20),
+
+  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+              min = 0.2, max = 2, value = 1, step = 0.2)
+)
+
+renderPlot({
+  hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
+       xlab = "Duration (minutes)", main = "Geyser eruption duration")
+
+  dens <- density(faithful$eruptions, adjust = input$bw_adjust)
+  lines(dens, col = "blue")
+})
 ```
 
-## Slide with R Output
 
-<pre><code>
-print("toto")
-<strong>print("toto")</strong>
-print("toto")
-print("toto")
-</code></pre>
+## Shiny app
+
+```{r shinyapp, results='markup'}
+sidebarPanel(
+  sliderInput("bins",
+              "Number of bins:",
+              min = 1,
+              max = 50,
+              value = 30)
+)
+
+mainPanel(
+  renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    
+    # draw the histogram with the specified number of bins
+    hist(x, breaks = bins, col = 'darkgray', border = 'white',
+         xlab = 'Waiting time to next eruption (in mins)',
+         main = 'Histogram of waiting times')
+  })
+)
+```
+
+## Shiny with plotly
+
+
+<div class="sideBar_left">
+
+```{r echo = FALSE}
+data <- iris
+columns <- colnames(data)
+
+selectInput("x_var", "X variable", choices = columns, selected = columns[1])
+selectInput("y_var", "Y variable", choices = columns, selected = columns[2])
+
+```
+
+</div>
+
+
+<div class="sideBar_right">
+
+```{r echo = FALSE, out.width = '10%'}
+renderPlotly({
+
+  plot_data <- data[, c(input$x_var, input$y_var, "Species")]
+  colnames(plot_data) <- c("x_var", "y_var", "color")
+
+  p <- plot_ly(
+    type = 'scatter',
+    mode = 'markers',
+    height = 400,
+    width = 800,
+    data = plot_data,
+    x = ~x_var,
+    y = ~y_var,
+    color = ~color,
+    hoverinfo = "text",
+    text = apply(data, 1, function(l) { # data must be in the same order as plot_data here !
+      paste(names(l), ":", l, collapse = "\n")
+    })
+  ) %>%
+    layout(
+      autosize = F,
+      xaxis = list(title = input$x_var),
+      yaxis = list(title = input$y_var)
+    )
+  
+  p
+})
+```
+
+</div>
+
+
 
 ## how_to_pipe
 

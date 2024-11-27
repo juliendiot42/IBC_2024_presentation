@@ -72,3 +72,15 @@ slides > slide.dark {
 .title-slide hgroup p {
   color: #7fb8ff !important;
 }
+
+.sideBar_left {
+  width: 20%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.sideBar_right {
+  width: 79%;
+  display: inline-block;
+  vertical-align: top;
+}

@@ -37,6 +37,7 @@
 
         R-packages = with Rpkgs.rPackages; [
           # list necessary R packages here
+          plotly
           rmarkdown
           shiny
 
