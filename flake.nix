@@ -93,6 +93,7 @@
           buildInputs = [
             r-with-packages
             pkgs.pandoc
+            pkgs.coreutils
           ];
 
           installPhase = ''
