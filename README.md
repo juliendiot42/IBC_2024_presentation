@@ -1,7 +1,46 @@
-# IBC 2024 Presentation, *R-shiny for Interactive Data Visualisation, Example of PlantBreedGame: A serious game to teach Genomic selection*
+# IBC 2024 Presentation, *Interactive Data Visualization in R with Shiny, Example of PlantBreedGame, A serious game to Teach Genomic Selection.*
 
 This repository contains the source code of Julien DIOT's the presentation during the 
 [IBC 2024](https://www.ibc2024.org/home)'s invited session *"Interactive Visualisation for Effective Decision-making in Agricultural and Environmental Sciences"*
+
+> Abstract:
+>
+> Shiny is an R package that enables the creation of interactive web
+> applications directly from the R language. Combining R's analytical, data
+> processing and data visualisation power, Shiny allows statisticians and data
+> analysts familiar with R to develop web applications that bring interactivity
+> to their projects without requiring extensive web development experience.
+> 
+> This presentation will begin with an introduction to Shiny through simple
+> applications, illustrating how Shiny applications are structured. We’ll explore
+> the two main components of a Shiny app: the "UI" (ie. User Interface) part that
+> defines the visual interface of the application the users see and interact with,
+> and the "server" part that specifies the logic that processes the inputs from
+> the UI and generates the corresponding outputs to display. This foundational
+> overview will demonstrate how easy it is to build applications with Shiny.
+> 
+> Following this introduction, I will present a more advanced example,
+> PlantBreedGame, an open-source web application designed as a serious game to
+> teach students and professionals the principles of selective breeding. In
+> PlantBreedGame, players take the role of a plant breeder and must carry out a
+> successful selection campaign from an initial plant collection identical for all
+> the participants. The game provides interfaces to let the players carry out
+> phenotyping, genotyping and various types of cross-breeding. In the background,
+> the application simulates data based on these actions using algorithms that
+> mimic genetic variation and inheritance patterns. Players can then download
+> those data from the game for further analysis regarding their breeding
+> strategies. At the end of the game, players submit some selected individuals
+> from their breeding efforts to be compared against those of other players.
+> The application then generates comparative visualizations to evaluate the
+> performance of each player’s selections, providing an engaging and competitive
+> aspect to the learning experience. Moreover, this visual feedback encourages
+> participants to reflect on their breeding approaches.
+> 
+> Finally, I will discuss some limitations and considerations in developing
+> Shiny applications, including performance and scalability challenges, and
+> customization options. However, these caveats are balanced by Shiny’s
+> accessibility and ease of use, making it an effective tool for R developers
+> without extensive web development experience.
 
 
 ## Starting the presentation
