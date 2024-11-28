@@ -40,30 +40,10 @@
           plotly
           rmarkdown
           shiny
-
-          # not in CRAN or Bioconductor:
-          # https://github.com/r-for-educators/flair
-          (pkgs.rPackages.buildRPackage {
-            name = "flair";
-            src = pkgs.fetchFromGitHub {
-              owner = "r-for-educators";
-              repo = "flair";
-              rev = "5658aae1257bf5d57ef03dfcb2fcde35236b10ae";
-              sha256 = "sha256-a3xRKZFVaEmpIdDRSrKHztk2CLDYLEaXhsVxgvQzvuI=";
-            };
-            propagatedBuildInputs = with pkgs.rPackages; [
-              dplyr
-              ggplot2
-              glue
-              htmltools
-              knitr
-              magrittr
-              purrr
-              rmarkdown
-              stringr
-            ];
-          })
+          cranlogs
+          qrcode
         ];
+
         R-packages-dev = with Rpkgs.rPackages; [
           # list R packages used for developement
           languageserver

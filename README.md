@@ -42,6 +42,40 @@ This repository contains the source code of Julien DIOT's the presentation durin
 > accessibility and ease of use, making it an effective tool for R developers
 > without extensive web development experience.
 
+## Some References
+
+#### `Shiny`
+- `Shiny`'s official website: https://shiny.posit.co/
+- Source code (for `R`): https://github.com/rstudio/shiny
+- `Shiny`'s gallery (several app examples): https://shiny.posit.co/r/gallery/
+- List of basic UI inputs: https://gallery.shinyapps.io/081-widgets-gallery/
+- (`R`) `Shiny` extentions: https://github.com/nanxstats/awesome-shiny-extensions
+
+
+#### `PlantBreedGame`
+- *PlantBreedGame* repository: https://github.com/timflutre/PlantBreedGame
+
+## Repository structure
+
+Feel free to use those codes for your own projects!
+
+#### Presentation:
+- [`IBC_2024.Rmd`](./IBC_2024.Rmd): The (interactive) presentation source code  
+- [`./src/`](./src/): Ressources for the presentation (eg. images, CSS)
+
+#### Presented shiny example (from R-Studio):
+- [`./shiny_app_examples/`](./shiny_app_example/): example of R-Shiny apps
+
+#### Nix stuff:
+
+The presentation is actually a web application which can be sometime difficult to reproduce (the famouse "it works on my machine" problem) nix handle that very well.
+
+- [`./flake.nix`](./flake.nix): Specifies the (highly reproducible) development environment.
+This is were all packages required for running the presentation are defined (this goes from the R packages, R its self, PlantBreedGame and and other system package like pandoc, and all their respective dependencies)
+- [`./flake.lock`](./flake.lock): Pins the versions of those packages
+- [`./dockerfile.nix`](./dockerfile.nix): To build the docker image that contain the presentation from Nix
+- [`./default.nix`](./default.nix): To package the presentation as its "own software".
+
 
 ## Starting the presentation
 

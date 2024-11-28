@@ -1,7 +1,7 @@
 ---
-title: "Untitled"
-author: "Julien Diot"
-date: "2024-11-25"
+title: "Interactive Data Visualization in R with Shiny, Example of *PlantBreedGame*, A serious game to Teach Genomic Selection"
+author: "Julien DIOT"
+date: "2024-12-10, IBC 2024, Atlanta USA"
 output:
   ioslides_presentation:
     # css: src/style.css # not working within the nix package
@@ -19,95 +19,551 @@ knitr::opts_chunk$set(
   results = "hold" # display chunk output in one block
 )
 
-library(flair)
-library(dplyr)
+library(qrcode)
 library(plotly)
 library(shiny)
+library(cranlogs)
 ```
 
 ```{r css, results='asis'}
 htmltools::includeCSS("src/style.css")
 ```
 
-## R Markdown
+## Overview
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The aim of this presentation is to encourage you to try `Shiny` by showing
+you simple example that you can reproduce and a more complex example
+(*PlantBreedGame*) to show you `Shiny`'s capabilities.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+- What is `Shiny`
+- Simple `Shiny` examples (with `R`)
+- Shiny application's structure
+- Example of *PlantBreedGame*
+- R-Shiny's Pro and con
+- References
 
-## Slide with Bullets
+## What is `Shiny`
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+- Packages for building *"Easy **web apps for data science** without the compromises"* from `R` and `python`
+- Developed by **Posit** (formly R-Studio)
+- **`R`-Package** [github.com/rstudio/shiny](https://github.com/rstudio/shiny)
+  - [Initial commit](https://github.com/rstudio/shiny/tree/e28b3da1badfecb34235e74a43aac4e8da1641bc)
+  on Jun 21, 2012 by Joe Chang [@jcheng5](https://github.com/jcheng5)
+  - [`v1.0.0`](https://github.com/rstudio/shiny/releases/tag/v1.0.0) published on Jan 14, 2017
+  - ~88 contributors, ~5.4K ⭐, CRAN [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-month/shiny?color=blue)](https://r-pkg.org/pkg/shiny)
+- **`Python` package** [github.com/posit-dev/py-shiny](https://github.com/posit-dev/py-shiny)
+  - [first commit](https://github.com/posit-dev/py-shiny/tree/5f6905833822301a59757247140dce3f4d6cb339)
+  on Jul 27, 2021 by Winston Chang [@wch](https://github.com/wch)
+  - [`v1.0.0`](https://github.com/posit-dev/py-shiny/releases/tag/v1.0.0) published on Jul 19, 2024
+  - ~28 contributors, ~1.3K ⭐, PiPy [![PyPI - Downloads](https://img.shields.io/pypi/dm/shiny)](https://pypistats.org/packages/shiny)
 
-## Slide with R Output
 
-```{r cars, echo = TRUE}
-summary(cars)
-```
+## Shiny example
 
+- Basic example app from R-Studio: `File -> New File -> Shiny Web App...`
 
+```{r}
+ui <- fluidPage(
+    # Application title
+    titlePanel("Old Faithful Geyser Data"),
 
+    # Sidebar with a slider input for number of bins
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput("bins",
+                        "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30)
+        ),
 
-## Interactive Plot
-
-```{r eruptions, results='markup'}
-inputPanel(
-  selectInput("n_breaks", label = "Number of bins:",
-              choices = c(10, 20, 35, 50), selected = 20),
-
-  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
-              min = 0.2, max = 2, value = 1, step = 0.2)
+        # Show a plot of the generated distribution
+        mainPanel(
+           plotOutput("distPlot")
+        )
+    )
 )
 
-renderPlot({
-  hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
-       xlab = "Duration (minutes)", main = "Geyser eruption duration")
+server <- function(input, output) {
 
-  dens <- density(faithful$eruptions, adjust = input$bw_adjust)
-  lines(dens, col = "blue")
-})
+    output$distPlot <- renderPlot({
+        # generate bins based on input$bins from ui.R
+        x    <- faithful[, 2]
+        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+        # draw the histogram with the specified number of bins
+        hist(x, breaks = bins, col = 'darkgray', border = 'white',
+             xlab = 'Waiting time to next eruption (in mins)',
+             main = 'Histogram of waiting times')
+    })
+}
+
+shinyApp(ui = ui, server = server)
 ```
 
+## Shiny example, code
 
-## Shiny app
+- Shiny app are structured around 2 components **`ui` and `server`**:
 
-```{r shinyapp, results='markup'}
-sidebarPanel(
-  sliderInput("bins",
-              "Number of bins:",
-              min = 1,
-              max = 50,
-              value = 30)
+
+<div style="display: flex;">
+<div style="flex: 1;">
+<div style="text-align: center;">
+**`ui`**
+</div>
+
+- defines **the visual** aspect of the application:
+  - The general layout
+  - The content
+  - The inputs
+  - The output types and location
+</div>
+
+<div style="flex: 1;">
+<div style="text-align: center;">
+**`server`**
+</div>
+
+  - defines **the logic to generate the outpus** from the inputs
+</div>
+</div>
+
+- `shiny` handles the communication between `ui` and `server`
+- The usage of inputs/outputs **"ids"** ensures **the links** between `ui` and `server`
+
+
+## Shiny example, code  {.smaller}
+
+<div style="display: flex;">
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+ui <- fluidPage(
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+
+  # Sidebar with a slider input for number of bins
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+        "Number of bins:",
+        min = 1,
+        max = 50,
+        value = 30)
+    ),
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
 )
+```
+</div>
 
-mainPanel(
-  renderPlot({
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
     # generate bins based on input$bins from ui.R
     x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white',
+    bins <- seq(min(x), max(x),
+                length.out = input$bins + 1)
+
+    # draw the histogram with the specified
+    # number of bins
+    hist(x, breaks = bins, col = 'darkgray',
+         border = 'white',
          xlab = 'Waiting time to next eruption (in mins)',
          main = 'Histogram of waiting times')
   })
-)
+}
 ```
 
-## Shiny with plotly
+</div>
+</div>
+
+Then we can run start the app with `shinyApp(ui = ui, server = server)`
+
+## Shiny example, code  {.smaller}
+
+We define the page structure: 1 page (`fluidPage`) with a title (`titlePanel`), and a "sidebar" and "main area" layout (`sidebarLayout`, `sidebarPanel`, `mainPanel`)
+
+<div style="display: flex;">
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+  ### <b>
+ui <- fluidPage(
+  ### </b>
+  # Application title
+  ### <b>
+  titlePanel("Old Faithful Geyser Data"),
+  ### </b>
+
+  # Sidebar with a slider input for number of bins
+  ### <b>
+  sidebarLayout(
+    sidebarPanel(
+  ### </b>
+      sliderInput("bins",
+        "Number of bins:",
+        min = 1,
+        max = 50,
+        value = 30)
+  ### <b>
+    ),
+  ### </b>
+    # Show a plot of the generated distribution
+  ### <b>
+    mainPanel(
+  ### </b>
+      plotOutput("distPlot")
+  ### <b>
+    )
+  )
+  ### </b>
+)
+```
+</div>
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x),
+                length.out = input$bins + 1)
+
+    # draw the histogram with the specified
+    # number of bins
+    hist(x, breaks = bins, col = 'darkgray',
+         border = 'white',
+         xlab = 'Waiting time to next eruption (in mins)',
+         main = 'Histogram of waiting times')
+  })
+}
+```
+
+</div>
+
+</div>
+
+## Shiny example, code  {.smaller}
+
+We define the inputs: here **a slider** with `sliderInput` with **id `bins`**
+
+<div style="display: flex;">
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+ui <- fluidPage(
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+
+  # Sidebar with a slider input for number of bins
+
+  sidebarLayout(
+  ### <b>
+    sidebarPanel(
+      sliderInput("bins",
+        "Number of bins:",
+        min = 1,
+        max = 50,
+        value = 30)
+    ),
+  ### </b>
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+```
+</div>
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x),
+                length.out = input$bins + 1)
+
+    # draw the histogram with the specified
+    # number of bins
+    hist(x, breaks = bins, col = 'darkgray',
+         border = 'white',
+         xlab = 'Waiting time to next eruption (in mins)',
+         main = 'Histogram of waiting times')
+  })
+}
+```
+
+```{r}
+# sliderInput("bins_2", "Number of bins:", min = 1, max = 50, value = 30)
+```
+
+</div>
+
+</div>
+
+
+
+
+## Shiny example, code  {.smaller}
+
+We define the outputs: here **a basic R plot** with `plotOutput` with **id `distPlot`**
+
+<div style="display: flex;">
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+ui <- fluidPage(
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+
+  # Sidebar with a slider input for number of bins
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+        "Number of bins:",
+        min = 1,
+        max = 50,
+        value = 30)
+    ),
+    # Show a plot of the generated distribution
+  ### <b>
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  ### </b>
+  )
+)
+```
+</div>
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x),
+                length.out = input$bins + 1)
+
+    # draw the histogram with the specified
+    # number of bins
+    hist(x, breaks = bins, col = 'darkgray',
+         border = 'white',
+         xlab = 'Waiting time to next eruption (in mins)',
+         main = 'Histogram of waiting times')
+  })
+}
+```
+</div>
+</div>
+
+
+## Shiny example, code  {.smaller}
+
+We specify the logic for the outputs `distPlot`.
+
+- `plotOutput` works in combination with `renderPlot`
+
+<div style="display: flex;">
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+ui <- fluidPage(
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+
+  # Sidebar with a slider input for number of bins
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+        "Number of bins:",
+        min = 1,
+        max = 50,
+        value = 30)
+    ),
+    # Show a plot of the generated distribution
+    mainPanel(
+  ### <b>
+      plotOutput("distPlot")
+  ### </b>
+    )
+  )
+)
+```
+</div>
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+server <- function(input, output) {
+  ### <b>
+  output$distPlot <- renderPlot({
+  ### </b>
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x),
+                length.out = input$bins + 1)
+
+    # draw the histogram with the specified
+    # number of bins
+    hist(x, breaks = bins, col = 'darkgray',
+         border = 'white',
+         xlab = 'Waiting time to next eruption (in mins)',
+         main = 'Histogram of waiting times')
+  ### <b>
+  })
+  ### </b>
+}
+```
+</div>
+</div>
+
+
+## Shiny example, code  {.smaller}
+
+We access the value of the input with `input$<id>` here `input$bins`
+
+<div style="display: flex;">
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+ui <- fluidPage(
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+
+  # Sidebar with a slider input for number of bins
+  sidebarLayout(
+    sidebarPanel(
+
+  ### <b>
+      sliderInput("bins",
+  ### </b>
+        "Number of bins:",
+        min = 1,
+        max = 50,
+        value = 30)
+    ),
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+```
+</div>
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x),
+  ### <b>
+                length.out = input$bins + 1)
+  ### </b>
+
+    # draw the histogram with the specified
+    # number of bins
+    hist(x, breaks = bins, col = 'darkgray',
+         border = 'white',
+         xlab = 'Waiting time to next eruption (in mins)',
+         main = 'Histogram of waiting times')
+  })
+}
+```
+</div>
+</div>
+
+## Shiny example, code  {.smaller}
+
+Inside the "render functions" it is standanrd R code that should return the correct object
+
+<div style="display: flex;">
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+ui <- fluidPage(
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+
+  # Sidebar with a slider input for number of bins
+  sidebarLayout(
+    sidebarPanel(
+
+      sliderInput("bins",
+        "Number of bins:",
+        min = 1,
+        max = 50,
+        value = 30)
+    ),
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+```
+</div>
+
+<div style="flex: 1;">
+
+```{r, echo=TRUE, eval=FALSE}
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+  ### <b>
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x),
+                length.out = input$bins + 1)
+
+    # draw the histogram with the specified
+    # number of bins
+    hist(x, breaks = bins, col = 'darkgray',
+         border = 'white',
+         xlab = 'Waiting time to next eruption (in mins)',
+         main = 'Histogram of waiting times')
+  ### </b>
+  })
+}
+```
+</div>
+</div>
+
+
+## Another simple example with `plotly`
+
+`Shiny` works very well with other packages oriented on interactivity like [`plotly`](https://plotly.com/r/), [`DT`](https://rstudio.github.io/DT/), [`leaflet`](https://rstudio.github.io/leaflet/)...
 
 
 <div class="sideBar_left">
 
-```{r echo = FALSE}
+```{r echo = FALSE, results='markup'}
 data <- iris
 columns <- colnames(data)
 
 selectInput("x_var", "X variable", choices = columns, selected = columns[1])
 selectInput("y_var", "Y variable", choices = columns, selected = columns[2])
-
 ```
 
 </div>
@@ -115,7 +571,7 @@ selectInput("y_var", "Y variable", choices = columns, selected = columns[2])
 
 <div class="sideBar_right">
 
-```{r echo = FALSE, out.width = '10%'}
+```{r echo = FALSE, out.width = '10%', results='markup'}
 renderPlotly({
 
   plot_data <- data[, c(input$x_var, input$y_var, "Species")]
@@ -140,7 +596,7 @@ renderPlotly({
       xaxis = list(title = input$x_var),
       yaxis = list(title = input$y_var)
     )
-  
+
   p
 })
 ```
@@ -148,26 +604,32 @@ renderPlotly({
 </div>
 
 
+## *PlantBreedGame*
 
-## how_to_pipe
 
-```{r how_to_pipe, include = FALSE}
-print("toto")
-print("tata")
-print("titi")
-print("tutu")
+## Some References
+
+- `Shiny`'s official website: https://shiny.posit.co/
+- Source code (for `R`): https://github.com/rstudio/shiny
+- `Shiny`'s gallery (several app examples): https://shiny.posit.co/r/gallery/
+- List of basic UI inputs: https://gallery.shinyapps.io/081-widgets-gallery/
+- (`R`) `Shiny` extentions: https://github.com/nanxstats/awesome-shiny-extensions
+
+
+
+##
+
+<div style="text-align: center;">
+**Thank you very much !**
+
+Source code of the presentation is available on GitHub:
+https://github.com/juliendiot42/IBC_2024_presentation
+
+
+```{r}
+qr <- qr_code("https://github.com/juliendiot42/IBC_2024_presentation")
+plot(qr)
 ```
+</div>
 
-
-```{r, echo = FALSE}
-decorate("how_to_pipe") %>%
-  flair_lines(c(2, 4))
-```
-
-
-## Slide with Plot
-
-```{r pressure}
-plot(pressure)
-```
 
