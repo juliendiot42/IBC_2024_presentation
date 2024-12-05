@@ -15,11 +15,7 @@
 
       layers = [
         # dependencies layer
-        (nix2containerPkgs.nix2container.buildLayer {
-          deps = presentation.buildInputs;
-          maxLayers = 90;
-        })
-        (nix2containerPkgs.nix2container.buildLayer { deps = [ presentation ]; })
+        (nix2containerPkgs.nix2container.buildLayer { deps = presentation.buildInputs; })
       ];
 
       copyToRoot = [
