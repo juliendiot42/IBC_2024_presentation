@@ -1,6 +1,6 @@
 ---
 title: "Interactive Data Visualization in R with Shiny, Example of *PlantBreedGame*, A serious game to Teach Genomic Selection"
-author: "Julien DIOT"
+author: "Julien DIOT, The University of Tokyo, Lab. of Biometry and Bioinformatics"
 date: "2024-12-10, IBC 2024, Atlanta USA"
 output:
   ioslides_presentation:
@@ -22,7 +22,6 @@ knitr::opts_chunk$set(
 library(qrcode)
 library(plotly)
 library(shiny)
-library(cranlogs)
 ```
 
 ```{r css, results='asis'}
@@ -41,6 +40,8 @@ you simple example that you can reproduce and a more complex example
 - Example of *PlantBreedGame*
 - R-Shiny's Pro and con
 - References
+
+
 
 ## What is `Shiny`
 
@@ -606,23 +607,87 @@ renderPlotly({
 
 ## *PlantBreedGame*
 
+- https://github.com/timflutre/PlantBreedGame
 
-## Some References
+- Serious game to teach the principles of selective breeding build with `R-Shiny`
+- Players are plant breeder and must carry out a successful selection campaign
+- They upload "request files" and the app simulate the requested data: phenotypes, haplotypes genotypes
+
+- App structured have been developed during a Master 2 student project in 2 months (some upates have been made after)
+
+
+<div class="notes">
+  http://127.0.0.1:3839
+
+  The **main structure of the app** have been done during the 2 month project.
+  Not the simulation code that were already developed.
+  Other updates have been made later but most of the app structur was developed in 2 months
+</div>
+
+
+## Shiny Pros & Cons
+
+
+<div style="display: flex;">
+<div style="flex: 1;">
+<div style="text-align: center;">
+**Pros**
+</div>
+- **No webfront skills** required (but `HTML`/`CSS`/`JS` knowledge is helpfull)
+- **Pure `R`** (or `Python`), any R-Package can be integrated
+- Rapid development
+- No web-server required
+</div>
+
+<div style="flex: 1;">
+<div style="text-align: center;">
+**Cons**
+</div>
+- Performances:
+  - limited by **`R`'s performances**
+  - single treaded: **Calculations "block" the app**, for all other users
+- **Basic design** (without `HTML`/`CSS`/`JS`)
+</div>
+</div>
+
+Summary:
+
+- Great **for "statisticians"**
+- Great for **internal communication** (eg. Shiny powered slides like those ones)
+- Good for **Prototypes** / **Proof of Concept**, or **"Inernal App"**
+
+
+<div class="notes">
+  Statisticans ie. "R-developers" / "not web-dev"  
+  Cons can be mitigated by specific R-Packages
+</div>
+
+
+## Some References { .smaller }
 
 - `Shiny`'s official website: https://shiny.posit.co/
 - Source code (for `R`): https://github.com/rstudio/shiny
+- Source code (for `python`): https://github.com/posit-dev/py-shiny
+
+Some usefull tools:
+
 - `Shiny`'s gallery (several app examples): https://shiny.posit.co/r/gallery/
 - List of basic UI inputs: https://gallery.shinyapps.io/081-widgets-gallery/
-- (`R`) `Shiny` extentions: https://github.com/nanxstats/awesome-shiny-extensions
+- Some `Shiny` extentions (for `R`): https://github.com/nanxstats/awesome-shiny-extensions
+
+PlantBreedGame:
+
+- Source code: https://github.com/timflutre/PlantBreedGame
+- *Crop Science*, Letter to the Editor: *PlantBreedGame: A Serious Game that Puts Students in the Breeder's Seat*, by Timothée Flutre, Julien Diot, Jacques David, https://doi.org/10.2135/cropsci2019.03.0183le
 
 
 
-##
+---
 
 <div style="text-align: center;">
 **Thank you very much !**
 
-Source code of the presentation is available on GitHub:
+Source code of the presentation is available on GitHub:  
 https://github.com/juliendiot42/IBC_2024_presentation
 
 
@@ -632,4 +697,8 @@ plot(qr)
 ```
 </div>
 
+
+<div class="notes">
+  Links of refences in the repo
+</div>
 

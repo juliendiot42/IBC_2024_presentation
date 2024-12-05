@@ -54,6 +54,7 @@ This repository contains the source code of Julien DIOT's the presentation durin
 
 #### `PlantBreedGame`
 - *PlantBreedGame* repository: https://github.com/timflutre/PlantBreedGame
+- *Crop Science*, Letter to the Editor: *PlantBreedGame: A Serious Game that Puts Students in the Breeder's Seat*, by Timothée Flutre, Julien Diot, Jacques David, https://doi.org/10.2135/cropsci2019.03.0183le
 
 ## Repository structure
 
@@ -71,13 +72,13 @@ Feel free to use those codes for your own projects!
 The presentation is actually a web application which can be sometime difficult to reproduce (the famouse "it works on my machine" problem) nix handle that very well.
 
 - [`./flake.nix`](./flake.nix): Specifies the (highly reproducible) development environment.
-This is were all packages required for running the presentation are defined (this goes from the R packages, R its self, PlantBreedGame and and other system package like pandoc, and all their respective dependencies)
+This is where all packages required for running the presentation are defined (this goes from the R packages, R its self, PlantBreedGame and and other system package like pandoc, and all their respective dependencies)
 - [`./flake.lock`](./flake.lock): Pins the versions of those packages
 - [`./dockerfile.nix`](./dockerfile.nix): To build the docker image that contain the presentation from Nix
 - [`./default.nix`](./default.nix): To package the presentation as its "own software".
 
 
-## Starting the presentation
+## How to Start the Presentation
 
 ### With `nix`
 
@@ -89,6 +90,12 @@ nix run github:juliendiot42/IBC_2024_presentation\#presentation
 
 You can then access the presentation by opening your web browser and go to http://localhost:3838 .
 
+You can also run *PlantBreedGame* (development version) locally with:
+
+```sh
+nix run github:timflutre/PlantBreedGame\#plantBreedGame
+```
+
 ### With `docker`
 
 If you have [docker](https://www.docker.com/) installed, you can simply run: 
@@ -99,9 +106,11 @@ docker run -p 3838:3838 ghcr.io/juliendiot42/ibc_2024_presentation/ibc2024presen
 
 You can then access the presentation by opening your web browser and go to http://localhost:3838 .
 
+> Use `docker kill <container-name>` to stop 
+
 ### With R (discouraged)
 
-I recommend to rather using the "nix" or "docker" method presented above because
+I recommend to rather use the "nix" or "docker" methods presented above because
 they are fully reproducible and all the dependencies will be automatically manages
 (except for nix or docker).
 

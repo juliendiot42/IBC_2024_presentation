@@ -40,7 +40,6 @@
           plotly
           rmarkdown
           shiny
-          cranlogs
           qrcode
         ];
 
