@@ -56,6 +56,16 @@ This repository contains the source code of Julien DIOT's the presentation durin
 - *PlantBreedGame* repository: https://github.com/timflutre/PlantBreedGame
 - *Crop Science*, Letter to the Editor: *PlantBreedGame: A Serious Game that Puts Students in the Breeder's Seat*, by Timothée Flutre, Julien Diot, Jacques David, https://doi.org/10.2135/cropsci2019.03.0183le
 
+#### R-Shiny powered slides
+
+The [*R Markdown: The Definitive Guide*](https://bookdown.org/yihui/rmarkdown/)
+by Yihui Xie, J. J. Allaire and Garrett Grolemund is a greate ressource about
+writing reports, slides or static website from `R`. The following chapters
+explain how to build the "R-Shiny powered slides" I presented:
+
+- Slides with `R-markdown`: https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html#presenter-mode
+- Integrate `Shiny` in `Rmd` document: https://bookdown.org/yihui/rmarkdown/shiny-documents.html
+
 ## Repository structure
 
 Feel free to use those codes for your own projects!

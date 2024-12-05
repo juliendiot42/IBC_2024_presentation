@@ -28,6 +28,22 @@ library(shiny)
 htmltools::includeCSS("src/style.css")
 ```
 
+## About those slides
+
+These slides are build with **Rmarkdown** and **R-shiny** to enable some **interactivity
+features**.
+
+The **PDF print** of thoses slides **may not be rendered correctly** and
+the **interactivity features will be not available**.
+
+You can find the **source code** of those slides and how to start the presentation
+at this GitHub repository: https://github.com/juliendiot42/IBC_2024_presentation
+
+More information about Rmarkdown and R-shiny presentation:
+
+- https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html#presenter-mode
+- https://bookdown.org/yihui/rmarkdown/shiny-documents.html
+
 ## Overview
 
 The aim of this presentation is to encourage you to try `Shiny` by showing
@@ -40,6 +56,11 @@ you simple example that you can reproduce and a more complex example
 - Example of *PlantBreedGame*
 - R-Shiny's Pro and con
 - References
+
+
+<div class="notes">
+  I will not speak about the deployment of Shiny app
+</div>
 
 
 
@@ -665,21 +686,42 @@ Summary:
 
 ## Some References { .smaller }
 
-- `Shiny`'s official website: https://shiny.posit.co/
-- Source code (for `R`): https://github.com/rstudio/shiny
-- Source code (for `python`): https://github.com/posit-dev/py-shiny
 
-Some usefull tools:
+<div style="display: flex;">
+<div style="flex: 1;">
 
-- `Shiny`'s gallery (several app examples): https://shiny.posit.co/r/gallery/
-- List of basic UI inputs: https://gallery.shinyapps.io/081-widgets-gallery/
-- Some `Shiny` extentions (for `R`): https://github.com/nanxstats/awesome-shiny-extensions
+**Shiny**:
 
-PlantBreedGame:
+- [`Shiny`'s official website](https://shiny.posit.co/)
+- Source code [for `R`](https://github.com/rstudio/shiny) and [for `python`](https://github.com/posit-dev/py-shiny)
 
-- Source code: https://github.com/timflutre/PlantBreedGame
+**Some usefull Shiny tools**:
+
+- [`Shiny`'s gallery (several app examples)](https://shiny.posit.co/r/gallery/)
+- [List of basic UI inputs](https://gallery.shinyapps.io/081-widgets-gallery/)
+- [Some `Shiny` extentions (for `R`)](https://github.com/nanxstats/awesome-shiny-extensions)
+
+</div>
+
+<div style="flex: 1;">
+
+**PlantBreedGame**:
+
+- [Source code on GitHub](https://github.com/timflutre/PlantBreedGame)
 - *Crop Science*, Letter to the Editor: *PlantBreedGame: A Serious Game that Puts Students in the Breeder's Seat*, by Timothée Flutre, Julien Diot, Jacques David, https://doi.org/10.2135/cropsci2019.03.0183le
 
+**"Shiny-Slides"**:
+
+- [Create slides with `R-markdown`](https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html#presenter-mode)
+- [Integrate `Shiny` in `Rmd` document](https://bookdown.org/yihui/rmarkdown/shiny-documents.html)
+
+</div>
+</div>
+
+
+<div class="notes">
+  You can find those links in the repo of this presentation
+</div>
 
 
 ---
