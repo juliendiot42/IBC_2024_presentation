@@ -626,6 +626,13 @@ renderPlotly({
 </div>
 
 
+<div class="notes">
+  LAST SLIDE of R-Shiny code.
+  Do a quick summary
+</div>
+
+
+
 ## *PlantBreedGame*
 
 - https://github.com/timflutre/PlantBreedGame
