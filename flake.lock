@@ -152,16 +152,16 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1726214539,
-        "narHash": "sha256-MYFnicePTA8jXidyKAhLT0XDOL0CU1/RyFUeAxYCTa0=",
+        "lastModified": 1733448264,
+        "narHash": "sha256-FOTOBTSeKK6fmIPp9VuZl/BnshlJNgTEg5Q5Su9WFhI=",
         "owner": "timflutre",
         "repo": "PlantBreedGame",
-        "rev": "cd120e958c1d3fa1cd3216da8aed74df00b0eba9",
+        "rev": "a83555e37955ae057dc3d44cc7d121e9baf4be58",
         "type": "github"
       },
       "original": {
         "owner": "timflutre",
-        "ref": "v1.1.1",
+        "ref": "v1.1.2",
         "repo": "PlantBreedGame",
         "type": "github"
       }
@@ -172,22 +172,10 @@
         "nix2container": "nix2container",
         "nixpkgs": "nixpkgs",
         "plantbreedgame": "plantbreedgame",
-        "rpkgs": "rpkgs"
-      }
-    },
-    "rpkgs": {
-      "locked": {
-        "lastModified": 1731797254,
-        "narHash": "sha256-df3dJApLPhd11AlueuoN0Q4fHo/hagP75LlM5K1sz9g=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "e8c38b73aeb218e27163376a2d617e61a2ad9b59",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "ref": "nixos-24.05",
-        "type": "indirect"
+        "rpkgs": [
+          "plantbreedgame",
+          "nixpkgs"
+        ]
       }
     },
     "systems": {

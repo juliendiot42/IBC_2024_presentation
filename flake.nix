@@ -1,16 +1,19 @@
 {
   description = "Flake for a R environment";
-  inputs = {
+  inputs = rec {
     nixpkgs.url = "nixpkgs/nixos-24.05";
+    plantbreedgame.url = "github:timflutre/PlantBreedGame/v1.1.2";
 
     # for R packages (to use same nixpkgs as for other packages):
-    rpkgs.url = "nixpkgs/nixos-24.05";
+    # rpkgs.url = "nixpkgs/nixos-24.05";
     # Or to use a specific R version;
     # check https://lazamar.co.uk/nix-versions/?channel=nixpkgs-unstable&package=R
     # to get the nixpkgs commit hash for each R versions:
     # rpkgs.url = "github:NixOS/nixpkgs/67b4bf1df4ae54d6866d78ccbd1ac7e8a8db8b73";
 
-    plantbreedgame.url = "github:timflutre/PlantBreedGame/v1.1.1";
+    # Here we will specify `rpkgs` to use the "nixpkgs" of "plantbreedgame"
+    # to avoid possible duplication of R related packages
+    rpkgs.follows = "plantbreedgame/nixpkgs";
 
     flake-utils.url = "github:numtide/flake-utils";
     nix2container.url = "github:nlewo/nix2container";
