@@ -100,11 +100,20 @@ nix run github:juliendiot42/IBC_2024_presentation\#presentation
 
 You can then access the presentation by opening your web browser and go to http://localhost:3838 .
 
-You can also run *PlantBreedGame* (development version) locally with:
+You can also run *PlantBreedGame* (the same version I showed durring the presentation) locally with:
 
 ```sh
-nix run github:timflutre/PlantBreedGame\#plantBreedGame
+nix run github:juliendiot42/IBC_2024_presentation\#plantBreedGame
 ```
+
+You can then access *PlantBreedGame* at http://localhost:3839 .
+
+
+> Note:  
+> Similarly, you can run the latest (development) version of *PlantBreedGame* with
+> ```
+> nix run github:timflutre/PlantBreedGame\#plantBreedGame -- --port 3839
+> ```
 
 ### With `docker`
 
@@ -117,6 +126,19 @@ docker run -p 3838:3838 ghcr.io/juliendiot42/ibc_2024_presentation/ibc2024presen
 You can then access the presentation by opening your web browser and go to http://localhost:3838 .
 
 > Use `docker kill <container-name>` to stop 
+
+You can also run *PlantBreedGame* (the same version I showed durring the presentation) locally with:
+
+```
+docker run -d --rm --name plantbreedgame -p 3839:3838 juliendiot/plantbreedgame:1.1.2
+```
+
+You can then access *PlantBreedGame* at http://localhost:3839 and stop the container with `docker kill <container-name>`.
+
+> Notes:  
+> With the above command, the game progress **will not be saved**.
+> Please see the [*PlantBreedGame*'s documentation](https://github.com/timflutre/PlantBreedGame?tab=readme-ov-file#installation) 
+> to get more information on how to properly install it.
 
 ### With R (discouraged)
 

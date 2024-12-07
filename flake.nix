@@ -84,6 +84,19 @@
             type = "app";
             program = "${packages.presentation}/bin/IBC_2024_presentation";
           };
+          plantBreedGame =
+            let
+              plantBreedGame_port3839 = pkgs.writeShellApplication {
+                name = "plantBreedGame";
+                text = ''
+                  ${plantbreedgamePkgs.plantBreedGame}/bin/plantBreedGame --port 3839
+                '';
+              };
+            in
+            {
+              type = "app";
+              program = "${plantBreedGame_port3839}/bin/plantBreedGame";
+            };
           default = presentation;
         };
 
